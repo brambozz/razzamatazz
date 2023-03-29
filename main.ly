@@ -1,9 +1,7 @@
 % TODO
-% tempo marking
 % chords on pickup to E
-% first 8 bars
-
-
+% add accents to first 8 bars of leadsheet
+% double bar lines at sections
 
 \version "2.24.0"
 \include "jazzchords.ily"
@@ -17,7 +15,7 @@
   title = "Razzamatazz"
   %subtitle = "(tune)"
   composer = "Quincy Jones"
-  %meter = "120"
+  % meter = "120"
   %piece = "Swing"
   %tagline = "Bram de Wilde"
 }
@@ -35,11 +33,23 @@ nostems = {
 stems = {
   \undo \hide Stem
 }
-restbar = { c4 c c c }
+restbar = { g4 g g g }
 fourbar = {\restbar | \restbar | \restbar | \restbar |}
 eightbar = {\fourbar \fourbar}
 
-theNotes = \new Voice \with {\consists "Pitch_squash_engraver"} {
+slash = {
+  \improvisationOn
+  \temporary\override NoteHead.Y-offset = #0
+  \hide Stem
+}
+
+noslash = {
+  \improvisationOff
+  \revert NoteHead.Y-offset
+  \undo \hide Stem
+}
+
+leadSheet = \new Voice \with {\consists "Pitch_squash_engraver"} {
 \relative c' {
   \key f \minor
   {
@@ -89,12 +99,55 @@ theNotes = \new Voice \with {\consists "Pitch_squash_engraver"} {
 }
 }
 
+trumpet = \new Voice \relative c'' {
+    r1 | r1 | r1 | r1 |
+    r1 | r1 | r1 |  c2 d4 bf' | 
+    g4\bendAfter #-4 r r2 |
+}
+
+tenor = \new Voice \relative c' {
+    r1 | r1 | r1 | r1 |
+    r1 | r1 | r1 |  c2 d4 bf' | 
+    g4\bendAfter #-4 r r2 |
+}
+
+keys = \new Voice \relative c''' {
+    <c d f>4 <c d f> <bf c ef> <bf c ef> | <a bf d> <a bf d> <g a c> <g a c> |
+    <f g bf> <f g bf> <e f a> <e f a> | <d e g> <d e g>
+    <c d f>4 <c d f> | <bf c ef> <bf c ef>  <a bf d> <a bf d> | <g a c> <g a c> 
+    <f g bf> <f g bf> | <e f a> <e f a> <d e g> <d e g> | 
+
+    \slash \stems 
+    af1 |
+
+}
+
+guitarOne = \new Voice \relative c'' {
+    g8 f g r g16 f d c r4 | g'8 d f fs g r g f | 
+    g r g16 f d c r4 g'8 d | f fs g r 
+    g8 f g r | g16 f d c r4 g'8 d f fs | g r g f  
+    g r g16 f d c | r4 g'8 d f fs g r | 
+
+    \slash \stems
+    \repeat unfold 16 {g16}  
+}
+
+guitarTwo = \new Voice \relative c'' {
+    r1 | r1 | r1 | r2 g~ | 
+    g g8 d c d | r2 g8 d c d | r2 g8 d c d | af'1 |  
+}
+
+bass = \new Voice \relative c { \clef bass
+    r1 | r1 | r1 | r2 g~ | 
+    g g8 d' c d | r2 g,8 d' c d | r2 g,8 d' c d | af1 |  
+}
+
 theChords = \chordmode {
   \key f \minor
-
+  \tempo 4=120
     % intro
     s1 | s1 | s1 | s1 | 
-    s1 | s1 | s1 | s1 |
+    s1 | s1 | s1 | af1:7.11+.13 |
     g1:m7 | c2:m7 d2:m7 | g1:m7 | c2:m7 d2:m7 ||
 
 
@@ -122,10 +175,11 @@ theChords = \chordmode {
     \mark \default \textMark "1:46"
     g:m7 | c:m7 | af:/bf | gf:maj7/af | 
     g:m7 | c:m7 | af:/bf | gf:maj7/af | 
-    ef1:maj7/f | af2:7.11+.13 |
+    ef1:maj7/f | \time 2/4  af2:7.11+.13 |
 
     % guitar solo + verse 3
     \mark \default \textMark "2:05"
+    \time 4/4
     g1:m7 | c2:m7 d2:m7 | g1:m7 | c2:m7 d2:m7 |
     g1:m7 | c2:m7 d2:m7 | g1:m7 | c2:m7 d2:m7 |
     ef1:maj7 | d:m7 | df:dim | a2:sus4 af2:7.11+.13 |
@@ -159,12 +213,28 @@ theChords = \chordmode {
 
 \score {
   <<
+    \new Staff \with { instrumentName = "Trumpet" } \trumpet
+    \new Staff \with { instrumentName = "Tenor sax" } \tenor
+    \new Staff \with { instrumentName = "Keys" } \keys
+    \new Staff \with { instrumentName = "Guitar 1" } \guitarOne
+    \new Staff \with { instrumentName = "Guitar 2" } \guitarTwo
+    \new Staff \with { instrumentName = "Bass" } \bass
     \new ChordNames \theChords
-    \new Staff  \theNotes
+    \new Staff  \leadSheet
   >>
   \layout {
   }
+}
+\score {
+  <<
+    \new ChordNames \theChords
+    \new Staff \with {midiInstrument= "trumpet" } \trumpet
+    \new Staff \with {midiInstrument= "tenor sax" } \tenor
+    \new Staff \with {midiInstrument = "electric piano 1"} \keys
+    \new Staff \with {midiInstrument = "electric guitar (clean)"} \guitarOne
+    \new Staff \with {midiInstrument = "electric guitar (clean)"} \guitarTwo
+    \new Staff \with {midiInstrument = "electric bass (finger)"} \bass
+  >>
   \midi {
-    \tempo 4 = 88
   }
 }
