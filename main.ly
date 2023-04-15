@@ -1,13 +1,12 @@
 % TODO
-% chords on pickup to E
-% add accents to first 8 bars of leadsheet
 % double bar lines at sections
-% hits blazers in drum/leadsheet?
-% baslijn fixen in intro
+% individuele partijen afmaken (veel rusten)
 % individuele partijen printen
+% iedere sectie van lead sheet in variabele, zodat ik ze makkelijk in andere partijen kan zetten
 
 % vragen voor Wouter
 % maat 62, duidelijk, of kan beter genoteerd? accenten?
+% hits blazers in drum/leadsheet?
 
 \version "2.24.0"
 \include "jazzchords.ily"
@@ -66,10 +65,10 @@ leadSheet = \new Voice \with {\consists "Pitch_squash_engraver"} {
     \stems
     r2 g~ | 
     g g8 d' c d | r2 g,8 d' c d | r2 g,8 d' c d | af1 |
+    \nostems
     \fourbar
 
     % verse 1
-    \nostems
     \eightbar
     \fourbar
     \fourbar
@@ -260,7 +259,7 @@ guitarTwo = \new Voice \relative c'' {
 bass = \new Voice \relative c { \clef bass
   \key g \minor
     r1 | r1 | r1 | r2 g~ | 
-    g g8 d' c d | r2 g,8 d' c d | r2 g,8 d' c d | af1 |  
+    g g'8 d c d | r2 g8 d c d | r2 g8 d c d | af1 |  
 }
 
 theChords = \chordmode {
@@ -296,7 +295,7 @@ theChords = \chordmode {
     \mark \default \textMark "1:46"
     g1:m7 | c:m7 | af:/bf | gf:maj7/af | 
     g:m7 | c:m7 | af:/bf | gf:maj7/af | 
-    ef1:maj7/f | \time 2/4  af2:7.11+.13 |
+    s8 g8:m7 s16 s8. ef4:maj7/f \tuplet 3/2 {f8:7 gf8:7 g8:7} | \time 2/4 af2:7.11+.13| 
 
     % guitar solo + verse 3
     \mark \default \textMark "2:05"
@@ -329,6 +328,7 @@ theChords = \chordmode {
     g:m7 | c:m7 | af:/bf | gf:maj7/af | 
     g1:m7 | c:m7 | af:/bf | gf:maj7/af | 
     g:m7 | c:m7 | af:/bf | gf:maj7/af | 
+    s8 g8:m7 s16 s8. ef4:maj7/f \tuplet 3/2 {f8:7 gf8:7 g8:7} | af2:7.11+.13 s8 g8:m7 s4| 
 
 }
 
