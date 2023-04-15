@@ -21,6 +21,8 @@
 \include "lead_sheet.ly"
 
 % Full score
+\book {
+\bookOutputSuffix "full_score"
 \score {
   <<
     \new Staff \with { instrumentName = "Trumpet" } \trumpet
@@ -47,4 +49,16 @@
   >>
   \midi {
   }
+}
+}
+
+\book{
+\bookOutputSuffix "trumpet"
+\score{
+  <<
+    \new Staff \trumpet
+  >>
+  \layout {
+  }
+}
 }
